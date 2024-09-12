@@ -1,0 +1,3 @@
+[submodule "extern/tello"]
+	path = extern/tello
+	url = https://github.com/HerrNamenlos123/tello.git
