@@ -409,3 +409,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
+/out
+/out
+/cmake-build-debug
+/out/build/x64-debug

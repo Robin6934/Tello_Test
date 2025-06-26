@@ -1,12 +1,30 @@
 ﻿#include "Tello_Test.h"
 
+#include <opencv2/objdetect.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/core/ocl.hpp>
+#include <opencv2/core/utils/logger.hpp>
 int main()
 {
+    cv::VideoCapture capture{ "udp://0.0.0.0:11111", cv::CAP_FFMPEG };
+    std::cout << cv::getVersionString();
     Tello tello;
+    if (!tello.connect()) return 0;
+    tello.enable_video_stream();
 
-    if (!tello.connect()) {
-        return 1;
+    while (true) {
+        cv::Mat frame;
+        capture >> frame;
+        if (!frame.empty()) {
+            cv::imshow("Tello Stream", frame);
+        }
+        if (cv::waitKey(1) == 27) {
+            break;
+
+        }
     }
+
+    return 0;
 
     PRINTF_WARN("Tello is connected and about to take off and fly around! Are you ready? [Press Enter]");
     std::cin.get();
@@ -19,19 +37,19 @@ int main()
             switch (c) {
             case 'w':
                 std::cout << "Forward" << std::endl;
-                tello.move_forward(1);
+                tello.move_forward(10);
                 break;
             case 'a':
                 std::cout << "Left" << std::endl;
-                tello.move_left(1);
+                tello.move_left(10);
                 break;
             case 's':
                 std::cout << "Backward" << std::endl;
-                tello.move_back(1);
+                tello.move_back(10);
                 break;
             case 'd':
                 std::cout << "Right" << std::endl;
-                tello.move_right(1);
+                tello.move_right(10);
                 break;
             case 27:
                 std::cout << "Exit" << std::endl;
